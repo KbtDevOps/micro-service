@@ -1,0 +1,72 @@
+version: '3.7'
+
+services:
+  employee-service:
+      image:  nexus.kkbt.dev:8888/hrm/employee:latest
+      ports:
+        - '8080:3000'
+      deploy:
+        mode: global
+        #replicas: 1
+        update_config:
+          parallelism: 1
+          order: start-first
+          failure_action: rollback
+        restart_policy:
+          condition: on-failure
+    
+  attendance-service:
+      image:  nexus.kkbt.dev:8888/hrm/attendance:latest
+      ports:
+        - '8081:3001'
+      deploy:
+        mode: global
+        #replicas: 1
+        update_config:
+          parallelism: 1
+          order: start-first
+          failure_action: rollback
+        restart_policy:
+          condition: on-failure
+  
+  payroll-service:
+      image:  nexus.kkbt.dev:8888/hrm/payroll:latest
+      ports:
+        - '8082:3002'
+      deploy:
+        mode: global
+        #replicas: 1
+        update_config:
+          parallelism: 1
+          order: start-first
+          failure_action: rollback
+        restart_policy:
+          condition: on-failure
+  
+  kpi-service:
+      image:  nexus.kkbt.dev:8888/hrm/kpi:latest
+      ports:
+        - '8083:3003'
+      deploy:
+        mode: global
+        #replicas: 1
+        update_config:
+          parallelism: 1
+          order: start-first
+          failure_action: rollback
+        restart_policy:
+          condition: on-failure
+  
+  report-service:
+      image:  nexus.kkbt.dev:8888/hrm/report:latest
+      ports:
+        - '8084:3004'
+      deploy:
+        mode: global
+        #replicas: 1
+        update_config:
+          parallelism: 1
+          order: start-first
+          failure_action: rollback
+        restart_policy:
+          condition: on-failure
