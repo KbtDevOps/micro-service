@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   employee-service:
-      image:  nexus.kkbt.dev:8888/hrm/employee:latest
+      image:  ghcr.io/kbtdevops/micro-service/hrm/employee:latest
       ports:
         - '8080:3000'
       deploy:
@@ -16,7 +16,7 @@ services:
           condition: on-failure
     
   attendance-service:
-      image:  nexus.kkbt.dev:8888/hrm/attendance:latest
+      image:  ghcr.io/kbtdevops/micro-service/hrm/attendance:latest
       ports:
         - '8081:3001'
       deploy:
@@ -30,7 +30,7 @@ services:
           condition: on-failure
   
   payroll-service:
-      image:  nexus.kkbt.dev:8888/hrm/payroll:latest
+      image:  ghcr.io/kbtdevops/micro-service/hrm/payroll:latest
       ports:
         - '8082:3002'
       deploy:
@@ -44,7 +44,7 @@ services:
           condition: on-failure
   
   kpi-service:
-      image:  nexus.kkbt.dev:8888/hrm/kpi:latest
+      image:  ghcr.io/kbtdevops/micro-service/hrm/kpi:latest
       ports:
         - '8083:3003'
       deploy:
@@ -58,7 +58,7 @@ services:
           condition: on-failure
   
   report-service:
-      image:  nexus.kkbt.dev:8888/hrm/report:latest
+      image:  ghcr.io/kbtdevops/micro-service/hrm/report:latest
       ports:
         - '8084:3004'
       deploy:
@@ -70,3 +70,12 @@ services:
           failure_action: rollback
         restart_policy:
           condition: on-failure
+  
+  haproxy:
+    ports:
+      - "80:80"
+    image: haproxy:1.0.0
+    deploy:
+      mode: global
+      update_config:
+        parallelism: 1

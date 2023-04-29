@@ -1,6 +1,6 @@
 #!/bin/bash
 
-swarmMasterIP=44.211.3.96
+swarmMasterIP=3.92.224.26
 swarmMasterSshPrivateKeyPath="./credential/up-devops-server.pem"
 
 validateAppNames () {
@@ -20,13 +20,13 @@ validateAppNames () {
 buildAndPushAnApp () {
     appName=$1
     echo "------------- start build $appName -----------------"
-    docker build -t nexus.kkbt.dev:8888/hrm/$appName ./microservice/$appName
-    docker push nexus.kkbt.dev:8888/hrm/$appName
+    docker build -t ghcr.io/kbtdevops/micro-service/hrm/$appName ./microservice/$appName
+    docker push ghcr.io/kbtdevops/micro-service/hrm/$appName
     echo "-------------- finish build $appName ---------------"
 }
 
 dockerLogin () {
-    docker login nexus.kkbt.dev:8888 -u admin -p admin123
+    docker login ghcr.io -u kongbunthoeurn -p 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
 }
 
 buildAndPushDocker () {
@@ -51,22 +51,22 @@ deployment () {
     scp -i $swarmMasterSshPrivateKeyPath docker-compose.yaml ubuntu@$swarmMasterIP:/opt/app/docker-compose.yaml
     # set up deployment
     ssh -o "StrictHostKeyChecking=no" -i $swarmMasterSshPrivateKeyPath ubuntu@$swarmMasterIP << EOF
-        docker login nexus.kkbt.dev:8888 -u admin -p admin123
+        docker login ghcr.io -u kongbunthoeurn -p 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
         docker stack deploy --with-registry-auth --prune --resolve-image=always -c /opt/app/docker-compose.yaml node
 EOF
 }
 
-clear
-echo "Welcome to automate micro service deployment"
+# clear
+# echo "Welcome to automate micro service deployment"
 
-read -p "Please input apps : " inputArrayLocalPort
+# read -p "Please input apps : " inputArrayLocalPort
 
-validateAppNames $inputArrayLocalPort
+# validateAppNames $inputArrayLocalPort
 
-# docker login
-dockerLogin
+# # docker login
+# dockerLogin
 
-# build docker and push docker
-buildAndPushDocker $inputArrayLocalPort
+# # build docker and push docker
+# buildAndPushDocker $inputArrayLocalPort
 
 deployment
