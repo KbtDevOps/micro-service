@@ -1,7 +1,8 @@
 #!/bin/bash
 
-swarmMasterIP=3.92.224.26
+swarmMasterIP=52.23.238.170
 swarmMasterSshPrivateKeyPath="./credential/up-devops-server.pem"
+registryToken="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"
 
 validateAppNames () {
     apps=("$@")
@@ -26,7 +27,7 @@ buildAndPushAnApp () {
 }
 
 dockerLogin () {
-    docker login ghcr.io -u kongbunthoeurn -p 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
+    docker login ghcr.io -u kongbunthoeurn -p $registryToken
 }
 
 buildAndPushDocker () {
@@ -51,7 +52,7 @@ deployment () {
     scp -i $swarmMasterSshPrivateKeyPath docker-compose.yaml ubuntu@$swarmMasterIP:/opt/app/docker-compose.yaml
     # set up deployment
     ssh -o "StrictHostKeyChecking=no" -i $swarmMasterSshPrivateKeyPath ubuntu@$swarmMasterIP << EOF
-        docker login ghcr.io -u kongbunthoeurn -p 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
+        docker login ghcr.io -u kongbunthoeurn -p $registryToken
         docker stack deploy --with-registry-auth --prune --resolve-image=always -c /opt/app/docker-compose.yaml node
 EOF
 }

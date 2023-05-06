@@ -72,10 +72,14 @@ services:
           condition: on-failure
   
   haproxy:
+    image: ghcr.io/kbtdevops/micro-service/hrm/haproxy:latest
     ports:
-      - "80:80"
-    image: haproxy:1.0.0
+      - 80:80
     deploy:
       mode: global
       update_config:
         parallelism: 1
+        order: start-first
+        failure_action: rollback
+      restart_policy:
+        condition: on-failure
